@@ -33,7 +33,7 @@ const Navbar = () => {
                     : 
                     <div className="flex items-center gap-2">
                         <Button onClick={logOut}>Log In</Button>
-                        <Button variant="secondary" onClick={logOut}>Sign Up</Button>
+                        <Button variant="outline" onClick={logOut}>Sign Up</Button>
                     </div>
                 }
                 <ThemeToggle/>
