@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
+import { Toaster } from "sonner";
 
 import Root from "./pages/Root";
 import Wrapper from "./components/Wrapper";
@@ -23,38 +24,41 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const App = () => {
   return (
-    <Routes>
-  {/* Public pages */}
-  <Route path="/" element={<LandingPage />} />
-  <Route path="/login" element={<LoginPage />} />
-  <Route path="/signup" element={<SignupPage />} />
+    <>   
+      <Toaster />
+      <Routes>
+        {/* Public pages */}
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
 
-  {/* Protected, but NO navbar */}
-  <Route
-    path="/dashboard/tasks/:taskId"
-    element={
-      <ProtectedRoute>
-        <TaskDetails />
-      </ProtectedRoute>
-    }
-  />
+        {/* Protected, but NO navbar */}
+        <Route
+          path="/dashboard/tasks/:taskId"
+          element={
+            <ProtectedRoute>
+              <TaskDetails />
+            </ProtectedRoute>
+          }
+        />
 
-  {/* Protected WITH navbar/root */}
-  <Route
-    path="/dashboard"
-    element={
-      <ProtectedRoute>
-        <Root />
-      </ProtectedRoute>
-    }
-  >
-    <Route element={<Wrapper />}>
-      <Route index element={<TasksPage />} />
-      <Route path="sessions" element={<SessionsPage />} />
-      <Route path="analytics" element={<AnalyticsPage />} />
-    </Route>
-  </Route>
-</Routes>
+        {/* Protected WITH navbar/root */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Root />
+            </ProtectedRoute>
+          }
+        >
+          <Route element={<Wrapper />}>
+            <Route index element={<TasksPage />} />
+            <Route path="sessions" element={<SessionsPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+          </Route>
+        </Route>
+      </Routes>
+  </>
   );
 };
 

@@ -68,13 +68,13 @@ const Wrapper = () => {
         {/* mobile only */}
         <div className="fixed bottom-0 left-0 right-0 bg-white/20 dark:bg-black/20 backdrop-blur-md z-50 flex p-3 bg-transparent border-t sm:hidden gap-2 w-full items-center justify-center">
           <Link to="/dashboard">
-            <Button className="w-full" variant={selectedButton === "tasks" ? "default" : "outline"}>Tasks</Button>
+            <Button className="w-full" variant={selectedButton === "tasks" ? "default" : "outline"}><Layers2 className="size-3"/>Tasks</Button>
           </Link>
           <Link to="sessions">
-            <Button className="w-full"variant={selectedButton === "sessions" ? "default" : "outline"}> Sessions</Button>
+            <Button className="w-full"variant={selectedButton === "sessions" ? "default" : "outline"}><Hourglass className="size-3"/>Sessions</Button>
           </Link>
           <Link to="analytics">
-            <Button className="w-full" variant={selectedButton === "analytics" ? "default" : "outline"}> Analytics </Button>
+            <Button className="w-full" variant={selectedButton === "analytics" ? "default" : "outline"}><TrendingUpDown className="size-3"/>Analytics</Button>
           </Link>
           <Link to="/dashboard">
             <Button className="w-full" variant={"outline"}>Help</Button>

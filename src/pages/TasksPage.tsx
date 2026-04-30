@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 //api
 import api from "@/api/api"
 
+import { toast } from "sonner";
+
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
@@ -159,60 +161,69 @@ const TasksPage = () => {
 
   //api calls
   const handleAddTask = async () => {
+  if (!title.trim() || !category || !description) return;
 
-    if (!title.trim() || !category || !description) return;
+  let finalPreset: PresetType;
 
-    let finalPreset: PresetType;
+  if (presetType === "prebuild") {
+    if (!preset) return;
 
-    if (presetType === "prebuild") {
-      if (!preset) return;
+    const selectedPreset = presets.find((item) => item.value === preset);
+    if (!selectedPreset) return;
 
-      const selectedPreset = presets.find((item) => item.value === preset);
-      if (!selectedPreset) return;
+    finalPreset = {
+      type: "prebuild",
+      name: selectedPreset.name,
+      focus: selectedPreset.focus,
+      break: selectedPreset.break,
+    };
+  } else {
+    if (!customFocus || !customBreak) return;
 
-      finalPreset = {
-        type: "prebuild",
-        name: selectedPreset.name,
-        focus: selectedPreset.focus,
-        break: selectedPreset.break,
-      };
-    } else {
-      if (!customFocus || !customBreak) return;
+    finalPreset = {
+      type: "custom",
+      focus: Number(customFocus) * 60,
+      break: Number(customBreak) * 60,
+    };
+  }
 
-      finalPreset = {
-        type: "custom",
-        focus: Number(customFocus) * 60,
-        break: Number(customBreak) * 60
-      };
-    }
+  const data = {
+    category,
+    title,
+    description,
+    preset: finalPreset,
+  };
 
-    const data = {
-      category: category,
-      title: title,
-      description: description,
-      preset: finalPreset,
-    }
+  const promise = api.post("/api/create-task", data);
 
-    const res = await api.post("/api/create-task", data)
-    dispatch(
-      addTask({
-        _id: res.data._id,
-        category: res.data.category,
-        title: res.data.title,
-        description: res.data.description,
-        preset: res.data.preset,
-        status: res.data.status,
-        createdAt: res.data.createdAt,
-      })
-    )
+  toast.promise(promise, {
+    loading: "Creating task...",
+    success: (res) => {
+      dispatch(
+        addTask({
+          _id: res.data._id,
+          category: res.data.category,
+          title: res.data.title,
+          description: res.data.description,
+          preset: res.data.preset,
+          status: res.data.status,
+          createdAt: res.data.createdAt,
+        })
+      );
 
-    setCategory("");
-    setTitle("");
-    setDescription("");
-    setPreset("");
-    setPresetType("prebuild");
-    setCustomFocus("");
-    setCustomBreak("");
+      // reset form
+      setCategory("");
+      setTitle("");
+      setDescription("");
+      setPreset("");
+      setPresetType("prebuild");
+      setCustomFocus("");
+      setCustomBreak("");
+
+      return "Task created successfully";
+    },
+    error: "Failed to create task",
+  });
   };
 
 
@@ -276,7 +287,7 @@ const TasksPage = () => {
 
         <div className="flex w-full sm:hidden items-center gap-2">
           <InputGroup className="flex-1">
-            <InputGroupInput placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)}/>
+            <InputGroupInput  placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)}/>
             <InputGroupAddon>
               <Search />
             </InputGroupAddon>
@@ -287,11 +298,11 @@ const TasksPage = () => {
             <Button onClick={()=>setView("col")} className="h-8 w-8" variant={view === "col" ? "default" : "ghost"}><Rows3 /></Button>
           </Card>
           <Card className="bg-transparent flex-row p-0 gap-0 rounded-lg">
-            <Select>
+            <Select >
               <SelectTrigger className="border-0">
                 <SelectValue placeholder={showGrid} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent >
                 <SelectItem value="2" onClick={() => setShowGrid("2")}>2</SelectItem>
                 <SelectItem value="1" onClick={() => setShowGrid("1")}>1</SelectItem>   
               </SelectContent>

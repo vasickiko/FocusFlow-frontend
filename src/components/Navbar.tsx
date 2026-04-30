@@ -25,15 +25,15 @@ const Navbar = () => {
     return(
        <div className="w-full fixed top-0 bg-white/20 dark:bg-black/20 backdrop-blur-md z-50 py-2.5 sm:py-5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
             <div className="flex gap-0.5 items-center">
-                <Link to="/"><img src={logo_black} alt="" className="sm:w-10 sm:h-10 h-8 w-8 dark:hidden" />
-                <Link to="/"><img src={logo_white} alt="" className="sm:w-10 sm:h-10 h-8 w-8 hidden dark:inline-block" /></Link></Link>
+                <Link to="/"><img src={logo_black} alt="" className="sm:w-10 sm:h-10 h-7 w-7 dark:hidden" />
+                <Link to="/"><img src={logo_white} alt="" className="sm:w-10 sm:h-10 h-7 w-7 hidden dark:inline-block" /></Link></Link>
             </div>
 
             <div className="flex items-center gap-2">
                 {token ? 
                     <div className="flex items-center gap-2">
                         <Button onClick={logOut}>Log out</Button> 
-                        {location.pathname !== "/dashboard" && <Link to="/dashboard"><Button variant="outline">Dashboard</Button></Link>}                
+                        {!location.pathname.includes("/dashboard") && <Link to="/dashboard"><Button variant="outline">Dashboard</Button></Link>}                
                     </div>
                     : 
                     <div className="flex items-center gap-2">
