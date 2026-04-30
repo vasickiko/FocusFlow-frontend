@@ -10,7 +10,7 @@ import type { RootState } from "../app/store";
 import { getTasks, addTask, selectTask, toggleTaskState } from "../features/tasks/tasksSlice";
 
 // icons
-import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, Loader2, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
+import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
 
 // shadcn
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
