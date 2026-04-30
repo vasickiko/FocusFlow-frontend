@@ -69,7 +69,7 @@ export function LoginForm({
                 Or continue with
               </FieldSeparator>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">Email or username</FieldLabel>
                 <Input
                   id="email"
                   type="email"

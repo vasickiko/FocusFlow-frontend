@@ -1,6 +1,7 @@
 // shadcn
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
+import { Hourglass, TrendingUpDown, HelpCircle, Layers2 } from "lucide-react";
 
 const Wrapper = () => {
 
@@ -14,7 +15,7 @@ const Wrapper = () => {
 
 
   return (
-    <div className="container sm:py-5 flex h-screen gap-4 flex-col mx-auto overflow-hidden">
+    <div className="container pt-12 pb-12 sm:pt-18 sm:pb-5 flex flex-1 gap-4 flex-col mx-auto overflow-hidden">
       <div className="hidden sm:flex p-1 flex-col items-start gap-2">
         <h1 className="leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">Manage your tasks</h1>
         <p className="max-w-4xl text-base text-balance text-foreground sm:text-lg">Plan your sessions, stay focused and get things done.</p>
@@ -28,15 +29,15 @@ const Wrapper = () => {
                   <Button 
                     className="w-full"      
                     variant={selectedButton === "tasks" ? "default" : "outline"}>
-                    Tasks
+                    <Layers2 className="size-3"/>Tasks
                   </Button>
                 </Link>
 
                 <Link to="sessions">
                   <Button
-                    className="w-full"          
+                    className="w-full "          
                     variant={selectedButton === "sessions" ? "default" : "outline"}>
-                    Sessions
+                    <Hourglass className="size-3"/>Sessions
                   </Button>
                 </Link>
 
@@ -44,18 +45,18 @@ const Wrapper = () => {
                   <Button
                     className="w-full"           
                     variant={selectedButton === "analytics" ? "default" : "outline"}>
-                    Analytics
+                    <TrendingUpDown className="size-3"/>Analytics
                   </Button>
                 </Link>
               </div>
 
               <div className="w-full flex flex-col items-center gap-2">
                 <Button className="w-full" variant={"outline"}>
-                  Log Out
+                 Log out
                 </Button>
 
                 <Button className="w-full" variant={"outline"}>
-                  Help
+                  <HelpCircle className="size-3" /> Help
                 </Button>
               </div>
         </div>
@@ -65,7 +66,7 @@ const Wrapper = () => {
         </div>
 
         {/* mobile only */}
-        <div className="flex p-3 bg-transparent border-t sm:hidden gap-2 w-full items-center justify-center">
+        <div className="fixed bottom-0 left-0 right-0 bg-white/20 dark:bg-black/20 backdrop-blur-md z-50 flex p-3 bg-transparent border-t sm:hidden gap-2 w-full items-center justify-center">
           <Link to="/dashboard">
             <Button className="w-full" variant={selectedButton === "tasks" ? "default" : "outline"}>Tasks</Button>
           </Link>

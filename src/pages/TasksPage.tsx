@@ -494,7 +494,7 @@ const TasksPage = () => {
         </div>
       }
 
-       {filteredTasks.length == 0 && view === "grid" &&
+       {filteredTasks.length == 0 && tasks.length > 0 &&
         <div className="w-full flex gap-1 items-center justify-center py-12">
           No tasks found <CircleSlash size={15}/>
         </div>
@@ -639,7 +639,7 @@ const TasksPage = () => {
         </div>
       }
 
-      {tasks.length >= 1 && view === "col" &&  
+      {filteredTasks.length >= 1 && view === "col" &&  
         <Table>
           <TableHeader>
             <TableRow>

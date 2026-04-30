@@ -9,21 +9,26 @@ import { setSessions } from "../features/session/sessionSlice";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { CircleSlash} from "lucide-react";
+import { CircleSlash, Grid2x2, Rows3, Search} from "lucide-react";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge"
 import { Empty,  EmptyDescription, EmptyHeader, EmptyMedia } from "@/components/ui/empty";
 
 //api
 import api from "@/api/api";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 const SessionsPage = () => {
+
+  const [view, setView] = useState<"grid" | "col">("grid")
+  const [query, setQuery] = useState("")
 
   const dispatch = useDispatch()
 
@@ -62,17 +67,55 @@ const SessionsPage = () => {
 
   const sortedSessions = [...sessions].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  return (
-    <div className="container pb-10 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
+  const filteredSessions = sortedSessions.filter(session => 
+    session.taskId?.title.toLowerCase().includes(query.toLowerCase())
+  );
 
-      {sessions.length >= 1 && (
+  return (
+    <div className="container pb-10 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
+
+      {/* {sessions.length >= 1 && (
         <div>
           <h1 className="leading-tighter text-2xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-4xl xl:tracking-tighter max-w-4xl">Sessions manager</h1>
           <p className="max-w-4xl text-base text-balance text-foreground sm:text-lg"> Track your focus history and completed sessions.</p>
         </div>
+      )} */}
+
+      {sessions.length >= 1 && (
+      <div className="w-full flex-col sm:flex-row flex gap-2 items-center">
+
+        <div className="flex w-full sm:hidden items-center gap-2">
+          <InputGroup className="flex-1">
+            <InputGroupInput placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)}/>
+            <InputGroupAddon>
+              <Search />
+            </InputGroupAddon>
+            <InputGroupAddon align="inline-end">{filteredSessions.length} results</InputGroupAddon>
+          </InputGroup>
+          <Card className="bg-transparent flex-row p-0 gap-0 rounded-lg">
+            <Button onClick={()=>setView("grid")} className="h-8 w-8" variant={view === "grid" ? "default" : "ghost"}><Grid2x2 /></Button>
+            <Button onClick={()=>setView("col")} className="h-8 w-8" variant={view === "col" ? "default" : "ghost"}><Rows3 /></Button>
+          </Card>
+        </div>
+
+        <InputGroup className="hidden sm:flex flex-1">
+          <InputGroupInput placeholder="Search..." value={query} onChange={(e) => setQuery(e.target.value)} />
+          <InputGroupAddon>
+            <Search />
+          </InputGroupAddon>
+          <InputGroupAddon align="inline-end">{sortedSessions.length} results</InputGroupAddon>
+        </InputGroup>
+
+        <Card className="hover:shadow-none bg-transparent hidden sm:flex flex-row p-0 gap-0 rounded-lg">
+          <Button onClick={()=>setView("grid")} className="h-8 w-8" variant={view === "grid" ? "default" : "ghost"}><Grid2x2 /></Button>
+          <Button onClick={()=>setView("col")} className="h-8 w-8" variant={view === "col" ? "default" : "ghost"}><Rows3 /></Button>
+        </Card>
+      </div>
       )}
 
-      {sessions.length === 0 ? (
+      
+
+      {sessions.length === 0 && (
         <div className="w-full flex gap-1 items-center justify-center py-12">
           <Empty>
             <EmptyHeader>
@@ -84,10 +127,13 @@ const SessionsPage = () => {
             </EmptyHeader>  
           </Empty>
         </div>
-      ) : (
-        <div className=" w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {sortedSessions.map((session, index) => (
-            <Card  className="h-fit">
+      )}
+      
+      {
+        sessions.length > 0 && view === "grid" && (
+          <div className=" w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {filteredSessions.map((session, index) => (
+            <Card  className="h-full">
               <CardHeader>
                 <CardTitle>{session.taskId?.title || "Deleted task"}</CardTitle>
                 <CardDescription>Session #{index + 1}</CardDescription>
@@ -119,10 +165,12 @@ const SessionsPage = () => {
             </Card>
           ))}
         </div>
-      )}
-
+        )
+      }
+   
+      {sessions.length > 0 && view === "col" && (
       <Table>
-        <TableCaption>A list of your session/s per task.</TableCaption>
+
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Session Id</TableHead>
@@ -135,7 +183,7 @@ const SessionsPage = () => {
           </TableRow>
         </TableHeader>
         <TableBody>     
-          {sortedSessions.map((session, index)=>(
+          {filteredSessions.map((session, index)=>(
             <TableRow>
               <TableCell className="font-medium">#{index+1}</TableCell>
               <TableCell>{session.taskId?.title || "Deleted task"}</TableCell>
@@ -148,6 +196,7 @@ const SessionsPage = () => {
           ))}
         </TableBody>
       </Table>
+      )}
     </div>
   );
 };

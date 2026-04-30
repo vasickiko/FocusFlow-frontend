@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 //shadcn
 import { Button } from "./ui/button"
@@ -21,7 +22,7 @@ const Navbar = () => {
     }
 
     return(
-       <div className="w-full py-2.5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
+       <div className="w-full fixed top-0 bg-white/20 dark:bg-black/20 backdrop-blur-md z-50 py-2.5 sm:py-5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
             <div className="flex gap-0.5 items-center">
                 <img src={logo_black} alt="" className="sm:w-10 sm:h-10 h-8 w-8 dark:hidden" />
                 <img src={logo_white} alt="" className="sm:w-10 sm:h-10 h-8 w-8 hidden dark:inline-block" />
@@ -29,11 +30,11 @@ const Navbar = () => {
 
             <div className="flex items-center gap-2">
                 {token ? 
-                    <Button onClick={logOut}>Log Out</Button> 
+                    <Button onClick={logOut}>Log out</Button> 
                     : 
                     <div className="flex items-center gap-2">
-                        <Button onClick={logOut}>Log In</Button>
-                        <Button variant="outline" onClick={logOut}>Sign Up</Button>
+                        <Link to="/login"><Button>Log in</Button></Link>
+                        <Link to="/signup"><Button variant="outline">Sign up</Button></Link>
                     </div>
                 }
                 <ThemeToggle/>
