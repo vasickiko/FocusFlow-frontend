@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import { Link } from "react-router-dom"
 
 //shadcn
@@ -11,6 +11,7 @@ import logo_white from "../assets/logo-white.png"
 
 const Navbar = () => {
 
+    const location = useLocation()
     const navigate = useNavigate()
 
     const token = localStorage.getItem("token")
@@ -32,7 +33,7 @@ const Navbar = () => {
                 {token ? 
                     <div className="flex items-center gap-2">
                         <Button onClick={logOut}>Log out</Button> 
-                        <Link to="/dashboard"><Button variant="outline">Dashboard</Button></Link>                
+                        {location.pathname !== "/dashboard" && <Link to="/dashboard"><Button variant="outline">Dashboard</Button></Link>}                
                     </div>
                     : 
                     <div className="flex items-center gap-2">

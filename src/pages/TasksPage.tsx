@@ -10,7 +10,7 @@ import type { RootState } from "../app/store";
 import { getTasks, addTask, selectTask, toggleTaskState } from "../features/tasks/tasksSlice";
 
 // icons
-import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
+import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, Loader2, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
 
 // shadcn
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -94,6 +94,7 @@ const TasksPage = () => {
   const [query, setQuery] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [loadingChangingStatus, setLoadingChangingStatus] = useState(false);
 
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
@@ -102,6 +103,8 @@ const TasksPage = () => {
   const [presetType, setPresetType] = useState<"prebuild" | "custom">("prebuild");
   const [customFocus, setCustomFocus] = useState("");
   const [customBreak, setCustomBreak] = useState("");
+
+  const [showGrid, setShowGrid] = useState("2");
 
   const { tasks } = useSelector((state: RootState) => state.tasks);
 
@@ -148,7 +151,7 @@ const TasksPage = () => {
     if(status === "completed"){
       return <p className="flex text-base items-center gap-1"><Check strokeWidth={3} size={14}/>Completed</p>
     }else if(status === "in_progress"){
-      return <p className="flex text-base  items-center gap-1"><LoaderCircle strokeWidth={3} className="animate-spin [animation-duration:3s]" size={14}/>In progress</p>
+      return <p className="flex text-base items-center gap-1"><LoaderCircle strokeWidth={3} className="animate-spin [animation-duration:3s]" size={14}/>In progress</p>
     }else if(status === "not_completed"){
       return <p className="flex text-base items-center gap-1"><CircleSlash strokeWidth={3} size={14} />Incomplete</p>
     }
@@ -212,11 +215,11 @@ const TasksPage = () => {
     setCustomBreak("");
   };
 
+
   const fetchAllTasks = async () => {
-    try {
+    try{
       setLoading(true);
       const res = await api.get("/api/tasks/get-all")
-
       const mappedTasks = res.data.map((task: any) => ({
         _id: task._id,
         category: task.category,
@@ -237,10 +240,13 @@ const TasksPage = () => {
 
   const handleChangeStatus = async (taskId: string, status: "completed" | "in_progress" | "not_completed") => {
     try{
+      setLoadingChangingStatus(true);
       await api.post(`/api/tasks/mark-as/${taskId}`, {status})
       dispatch(toggleTaskState({taskId, status}))
     }catch(err){
       console.log(err)
+    }finally{
+      setLoadingChangingStatus(false);
     }
   }
 
@@ -260,7 +266,7 @@ const TasksPage = () => {
     );
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
+  if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
     <div className="container pb-8 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
@@ -279,6 +285,17 @@ const TasksPage = () => {
           <Card className="bg-transparent flex-row p-0 gap-0 rounded-lg">
             <Button onClick={()=>setView("grid")} className="h-8 w-8" variant={view === "grid" ? "default" : "ghost"}><Grid2x2 /></Button>
             <Button onClick={()=>setView("col")} className="h-8 w-8" variant={view === "col" ? "default" : "ghost"}><Rows3 /></Button>
+          </Card>
+          <Card className="bg-transparent flex-row p-0 gap-0 rounded-lg">
+            <Select>
+              <SelectTrigger className="border-0">
+                <SelectValue placeholder={showGrid} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="2" onClick={() => setShowGrid("2")}>2</SelectItem>
+                <SelectItem value="1" onClick={() => setShowGrid("1")}>1</SelectItem>   
+              </SelectContent>
+            </Select>
           </Card>
         </div>
 
@@ -304,7 +321,7 @@ const TasksPage = () => {
       )}
 
       {filteredTasks.length >= 1 && view === "grid" &&
-        <div className="w-full grid mt-2 grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-14">
+        <div className={`w-full grid mt-2 grid-cols-${showGrid} sm:grid-cols-4 gap-x-4 gap-y-14`}>
           <div>
               <div className="flex items-center gap-1 h-6">
                 <p>Add task</p>
@@ -443,7 +460,7 @@ const TasksPage = () => {
           {filteredTasks.map((task) => (
                 <div>
                   <div className="flex h-6 items-center justify-between">     
-                    {getStatusLabel(task.status)}           
+                   { loadingChangingStatus ? <LoaderCircle strokeWidth={3} className="animate-spin" size={14}/> : getStatusLabel(task.status) }           
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild >
                           <Button size={"xs"} variant="outline"><Ellipsis /></Button>

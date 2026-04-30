@@ -75,7 +75,7 @@ const SessionsPage = () => {
     session.taskId?.title.toLowerCase().includes(query.toLowerCase())
   );
 
-  if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
+  if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
     <div className="container pb-10 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">

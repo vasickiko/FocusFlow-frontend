@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/avatar"
 
 import { Button } from "@/components/ui/button"
+import { Link } from "react-router-dom";
 
 
 const LandingPage = () => {
@@ -45,7 +46,7 @@ const LandingPage = () => {
             <p className="max-w-4xl text-base text-balance text-foreground sm:text-lg">FocusFlow is a productivity app that helps you manage your tasks and stay focused.</p>
           </div>
           
-          <Button>Get started</Button>
+          <Link to="/dashboard"><Button>Get started</Button></Link>
            
         </div>
         
