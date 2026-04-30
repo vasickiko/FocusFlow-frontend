@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 import api from "@/api/api"
+import { LoaderCircle } from "lucide-react"
 
 export function LoginForm({
   className,
@@ -27,17 +28,23 @@ export function LoginForm({
 
 
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await api.post("/api/auth/login", { identifier, password });
       localStorage.setItem("token", response.data.token);
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -84,7 +91,9 @@ export function LoginForm({
                 <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
               </Field>
               <Field>
-                <Button type="submit" onClick={handleSubmit}>Login</Button>
+                <Button type="submit" onClick={handleSubmit} disabled={loading}>
+                  {loading ? <LoaderCircle className="animate-spin" /> : "Login"}
+                </Button>
                 <FieldDescription className="text-center">
                   Don&apos;t have an account? <Link to="/signup">Sign up</Link>
                 </FieldDescription>

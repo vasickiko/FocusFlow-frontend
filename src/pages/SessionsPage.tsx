@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { CircleSlash, Grid2x2, Rows3, Search} from "lucide-react";
+import { CircleSlash, Grid2x2, LoaderCircle, Rows3, Search} from "lucide-react";
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge"
 import { Empty,  EmptyDescription, EmptyHeader, EmptyMedia } from "@/components/ui/empty";
@@ -29,6 +29,7 @@ const SessionsPage = () => {
 
   const [view, setView] = useState<"grid" | "col">("grid")
   const [query, setQuery] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -37,11 +38,14 @@ const SessionsPage = () => {
   useEffect(()=>{
     const fetchSessions = async () => {
       try{
+        setLoading(true)
         const res = await api.get("/api/get/all-sessions")
         console.log(res.data)
         dispatch(setSessions(res.data))
       }catch(err){
         console.log(err)
+      }finally{
+        setLoading(false)
       }
     }
 
@@ -70,6 +74,8 @@ const SessionsPage = () => {
   const filteredSessions = sortedSessions.filter(session => 
     session.taskId?.title.toLowerCase().includes(query.toLowerCase())
   );
+
+  if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
     <div className="container pb-10 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">

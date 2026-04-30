@@ -93,6 +93,8 @@ const TasksPage = () => {
   const [sort, setSort] = useState("all") 
   const [query, setQuery] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -212,6 +214,7 @@ const TasksPage = () => {
 
   const fetchAllTasks = async () => {
     try {
+      setLoading(true);
       const res = await api.get("/api/tasks/get-all")
 
       const mappedTasks = res.data.map((task: any) => ({
@@ -227,6 +230,8 @@ const TasksPage = () => {
       dispatch(getTasks(mappedTasks))
     } catch (err) {
       console.log(err)
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -254,6 +259,8 @@ const TasksPage = () => {
       task.description.toLowerCase().includes(search)
     );
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+  if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
     <div className="container pb-8 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">

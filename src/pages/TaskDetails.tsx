@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, LoaderCircle } from "lucide-react";
 
 import ThemeToggle from "@/components/ThemeToggle";
 
@@ -25,6 +25,8 @@ const TaskDetails = () => {
 
   const [task, setTask] = useState<Task | null>(null);
   const [bgImage, setBgImage] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(false);
 
   const images = [
     {
@@ -40,6 +42,7 @@ const TaskDetails = () => {
 
   const fetchTask = async () => {
     try {
+      setLoading(true);   
       const res = await api.get(`/api/tasks/${taskId}`);
 
       setTask({
@@ -48,6 +51,8 @@ const TaskDetails = () => {
       });
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,6 +75,7 @@ const TaskDetails = () => {
     setBgImage(savedImage);
   }, [taskId]);
 
+  if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
   if (!task) return <div>Task not found</div>;
 
   return (

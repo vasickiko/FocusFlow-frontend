@@ -7,31 +7,8 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
-
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-const cards = [
-  {
-    title: "Create tasks",
-    description: "Create and manage your tasks with ease. Stay organized and productive.",
-  },
-  {
-    title: "Choose technique",
-    description: "Choose from a variety of techniques to suit your needs.",
-  },
-  {
-    title: "Card 3",
-    description: "This is the third card",
-  },
-]
 
 const LandingPage = () => {
   return (
@@ -67,32 +44,11 @@ const LandingPage = () => {
             <h1 className="leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">Get things done with <span className="underline text-blue underline-offset-8 ">FocusFlow</span></h1>
             <p className="max-w-4xl text-base text-balance text-foreground sm:text-lg">FocusFlow is a productivity app that helps you manage your tasks and stay focused.</p>
           </div>
-          <div className="flex gap-2">
-            <Button>Get started</Button>
-            <Button variant="outline">Learn more</Button>
-          </div>
+          
+          <Button>Get started</Button>
+           
         </div>
-         <Carousel className="w-full max-w-[18rem] sm:max-w-xs">
-          <CarouselContent>
-            {cards.map((card, index) => (
-              <CarouselItem key={index}>
-                <div className="p-1">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>{card.title}</CardTitle>
-                      <CardDescription>{card.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
-                      <span className="text-4xl font-semibold">{index + 1}</span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        
       </div>
     </div>
   )
