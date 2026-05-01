@@ -1,7 +1,7 @@
 // shadcn
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
-import { Hourglass, TrendingUpDown, HelpCircle, Layers2 } from "lucide-react";
+import { Hourglass, TrendingUpDown, Layers2 } from "lucide-react";
 
 const Wrapper = () => {
   const location = useLocation();
