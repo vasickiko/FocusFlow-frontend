@@ -118,8 +118,9 @@ const TasksPage = () => {
   ];
 
   const minuteOptions = [
-    "5", "10", "15", "20", "25", "30",
-    "35", "40", "45", "50", "55", "60",
+    "10", "20", "30", "40", "50", "60",
+    "70", "80", "90", "100", "120", "130",
+    "140", "150", "160", "170", "180"
   ];
 
   //formatting
@@ -567,9 +568,12 @@ const TasksPage = () => {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Category</SelectLabel>
+                                  <SelectItem value="code">Code</SelectItem>
                                   <SelectItem value="study">Study</SelectItem>
                                   <SelectItem value="read">Read</SelectItem>
                                   <SelectItem value="paint">Paint</SelectItem>
+                                  <SelectItem value="craft">Craft</SelectItem>
+                                  <SelectItem value="crochet">Crochet</SelectItem>                          
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
