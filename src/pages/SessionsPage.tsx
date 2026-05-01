@@ -35,22 +35,23 @@ const SessionsPage = () => {
 
   const { sessions } = useSelector((state: RootState) => state.sessions);
 
-  useEffect(()=>{
-    const fetchSessions = async () => {
-      try{
-        setLoading(true)
-        const res = await api.get("/api/get/all-sessions")
-        console.log(res.data)
-        dispatch(setSessions(res.data))
-      }catch(err){
-        console.log(err)
-      }finally{
-        setLoading(false)
-      }
-    }
+  useEffect(() => {
+  if (sessions.length > 0) return;
 
-    fetchSessions()
-  }, [])
+  const fetchSessions = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/api/get/all-sessions");
+      dispatch(setSessions(res.data));
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchSessions();
+}, [sessions.length, dispatch]);
  
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -71,14 +72,16 @@ const SessionsPage = () => {
 
   const sortedSessions = [...sessions].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  const filteredSessions = sortedSessions.filter(session => 
-    session.taskId?.title.toLowerCase().includes(query.toLowerCase())
-  );
+  const filteredSessions = sortedSessions.filter((session) =>
+  (session.taskId?.title || "")
+    .toLowerCase()
+    .includes(query.toLowerCase())
+);
 
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-10 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
+    <div className="container pb-10 pr-0 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
 
       {/* {sessions.length >= 1 && (
         <div>
@@ -139,7 +142,7 @@ const SessionsPage = () => {
         sessions.length > 0 && view === "grid" && (
           <div className=" w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {filteredSessions.map((session, index) => (
-            <Card  className="h-full">
+            <Card key={session._id} className="h-full">
               <CardHeader>
                 <CardTitle>{session.taskId?.title || "Deleted task"}</CardTitle>
                 <CardDescription>Session #{index + 1}</CardDescription>
@@ -190,7 +193,7 @@ const SessionsPage = () => {
         </TableHeader>
         <TableBody>     
           {filteredSessions.map((session, index)=>(
-            <TableRow>
+            <TableRow key={session._id}>
               <TableCell className="font-medium">#{index+1}</TableCell>
               <TableCell>{session.taskId?.title || "Deleted task"}</TableCell>
               <TableCell>{formatTime(session.plannedDuration)}m</TableCell>

@@ -42,7 +42,7 @@ const LandingPage = () => {
             <p className="text-sm">Join 10,000+ users</p>
           </div>    
           <div className="flex flex-col gap-2">
-            <h1 className="leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">Get things done with <span className="underline text-blue underline-offset-8 ">FocusFlow</span></h1>
+            <h1 className="leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">Get things done with <span className="underline text-blue underline-offset-8 ">Focus Flow</span></h1>
             <p className="max-w-4xl text-base text-balance text-foreground sm:text-lg">FocusFlow is a productivity app that helps you manage your tasks and stay focused.</p>
           </div>
           
