@@ -383,7 +383,7 @@ const TasksPage = () => {
 
                         <Field>
                           <FieldLabel htmlFor="task-description">Description</FieldLabel>
-                          <Input id="task-description" type="text" placeholder="Example: Understanding props" value={description} onChange={(e) => setDescription(e.target.value)}/>                          
+                          <Input required={false} id="task-description" type="text" placeholder="Example: Understanding props" value={description} onChange={(e) => setDescription(e.target.value)}/>                          
                         </Field>
 
                         <Field>
@@ -592,7 +592,7 @@ const TasksPage = () => {
 
                         <Field>
                           <FieldLabel htmlFor="task-description">Description</FieldLabel>
-                          <Input id="task-description" type="text" placeholder="Example: Understanding props" value={description} onChange={(e) => setDescription(e.target.value)}/>                          
+                          <Input required={false} id="task-description" type="text" placeholder="Example: Understanding props" value={description} onChange={(e) => setDescription(e.target.value)}/>                          
                         </Field>
 
                         <Field>
