@@ -80,7 +80,7 @@ const TaskDetails = () => {
 
   return (
     <div
-  className="h-dvh overflow-hidden container relative flex flex-col items-center justify-center gap-10 mx-auto bg-cover bg-center bg-no-repeat"
+  className="h-dvh bg-red-500 w-screen overflow-hidden relative flex flex-col items-center justify-center gap-10 mx-auto bg-cover bg-center bg-no-repeat"
   style={{ backgroundImage: bgImage ? `url(${bgImage})` : "none" }}>
       <h1 className="absolute left-1/2 -translate-x-1/2 text-center capitalize top-10 leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">
         {task.title}

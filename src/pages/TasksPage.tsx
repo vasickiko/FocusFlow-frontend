@@ -12,7 +12,7 @@ import type { RootState } from "../app/store";
 import { getTasks, addTask, selectTask, toggleTaskState } from "../features/tasks/tasksSlice";
 
 // icons
-import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
+import { BookOpen, Check, CircleSlash,  CodeXml,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Notebook, Palette, Pencil, Play, Plus, Rows3, ScissorsLineDashed, Timer} from "lucide-react";
 
 // shadcn
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -160,6 +160,49 @@ const TasksPage = () => {
     }
   };
 
+  const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case "code":
+      return (
+        <>
+          <CodeXml className="size-3" /> Code
+        </>
+      );
+    case "write":
+      return (
+        <>
+          <Pencil className="size-3" /> Write
+        </>
+      );
+    case "craft":
+      return (
+        <>
+          <ScissorsLineDashed className="size-3" /> Craft
+        </>
+      );
+    case "study":
+      return (
+        <>
+          <Notebook className="size-3" /> Study
+        </>
+      );
+    case "read":
+      return (
+        <>
+          <BookOpen className="size-3" /> Read
+        </>
+      );
+    case "paint":
+      return (
+        <>
+          <Palette className="size-3" /> Paint
+        </>
+      );
+    default:
+      return category;
+  }
+};
+
   //api calls
   const handleAddTask = async () => {
   if (!title.trim() || !category || !description) return;
@@ -281,7 +324,7 @@ const TasksPage = () => {
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-8 flex flex-col items-start gap-4 pr-0 sm:pr-2 mx-auto ">
+    <div className="container pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
 
       {tasks.length >= 1 && (
       <div className="w-full flex-col sm:flex-row flex gap-2 items-center">
@@ -323,7 +366,7 @@ const TasksPage = () => {
           <Button onClick={() => setSort("all")} variant={sort === "all" ? "default" : "ghost"}>All</Button>
           <Button onClick={() => setSort("completed")} className="flex-1" variant={sort === "completed" ? "default" : "ghost"}>Completed</Button>
           <Button onClick={() => setSort("in_progress")} className="flex-1" variant={sort === "in_progress" ? "default" : "ghost"}>In progress</Button>
-          <Button onClick={() => setSort("not_completed")} className="flex-1" variant={sort === "not_completed" ? "default" : "ghost"}>Not completed</Button>
+          <Button onClick={() => setSort("not_completed")} className="flex-1" variant={sort === "not_completed" ? "default" : "ghost"}>Incomplete</Button>
         </Card>
         <Card className="hover:shadow-none bg-transparent hidden sm:flex flex-row p-0 gap-0 rounded-lg">
           <Button onClick={()=>setView("grid")} className="h-8 w-8" variant={view === "grid" ? "default" : "ghost"}><Grid2x2 /></Button>
@@ -333,7 +376,7 @@ const TasksPage = () => {
       )}
 
       {filteredTasks.length >= 1 && view === "grid" &&
-        <div className={`w-full grid mt-2 grid-cols-${showGrid} sm:grid-cols-4 gap-x-4 gap-y-14`}>
+        <div className={`w-full grid  grid-cols-${showGrid} sm:grid-cols-4 gap-x-4 gap-y-14`}>
           <div>
               <div className="flex items-center gap-1 h-6">
                 <p>Add task</p>
@@ -364,13 +407,14 @@ const TasksPage = () => {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Category</SelectLabel>
-                                  <SelectItem value="code">Code</SelectItem>
-                                  <SelectItem value="study">Study</SelectItem>
-                                  <SelectItem value="read">Read</SelectItem>
-                                  <SelectItem value="paint">Paint</SelectItem>
-                                  <SelectItem value="craft">Craft</SelectItem>
-                                  <SelectItem value="crochet">Crochet</SelectItem>
-                                  <SelectItem value="write">Write</SelectItem>    
+                                  <SelectItem value="code"><CodeXml />Code</SelectItem>
+                                  <SelectItem value="write"><Pencil />Write</SelectItem>    
+                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
+                                  <SelectItem value="study"><Notebook />Study</SelectItem>
+                                  <SelectItem value="read"><BookOpen />Read</SelectItem>
+                                  <SelectItem value="paint"><Palette />Paint</SelectItem>
+                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
+                                  <SelectItem value="write"><Pencil />Write</SelectItem>    
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -504,7 +548,7 @@ const TasksPage = () => {
 
                   <Card className="cursor-pointer mt-2 h-full" key={task._id} onClick={() => { dispatch(selectTask(task._id)); navigate(`/dashboard/tasks/${task._id}`);}}>
                     <CardHeader>
-                      <Badge className="mb-1" variant={"secondary"}>{task.category}</Badge>
+                      <Badge className="mb-1" variant={"secondary"}>{getCategoryIcon(task.category)}</Badge>
                       <CardTitle>{task.title}</CardTitle>    
                       <CardDescription>
                         {task.description}
@@ -573,13 +617,15 @@ const TasksPage = () => {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Category</SelectLabel>
-                                  <SelectItem value="code">Code</SelectItem>
-                                  <SelectItem value="study">Study</SelectItem>
-                                  <SelectItem value="read">Read</SelectItem>
-                                  <SelectItem value="paint">Paint</SelectItem>
-                                  <SelectItem value="craft">Craft</SelectItem>
-                                  <SelectItem value="crochet">Crochet</SelectItem>     
-                                  <SelectItem value="write">Write</SelectItem>                     
+                                  <SelectLabel>Category</SelectLabel>
+                                  <SelectItem value="code"><CodeXml />Code</SelectItem>
+                                  <SelectItem value="write"><Pencil />Write</SelectItem>    
+                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
+                                  <SelectItem value="study"><Notebook />Study</SelectItem>
+                                  <SelectItem value="read"><BookOpen />Read</SelectItem>
+                                  <SelectItem value="paint"><Palette />Paint</SelectItem>
+                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
+                                  <SelectItem value="write"><Pencil />Write</SelectItem>                       
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>

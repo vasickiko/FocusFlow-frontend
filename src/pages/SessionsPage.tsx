@@ -81,7 +81,7 @@ const SessionsPage = () => {
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-10 pr-0 sm:pr-2 sm:pb-0 flex flex-col items-start gap-4 mx-auto ">
+    <div className="container pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
 
       {/* {sessions.length >= 1 && (
         <div>
@@ -144,6 +144,7 @@ const SessionsPage = () => {
           {filteredSessions.map((session, index) => (
             <Card key={session._id} className="h-full">
               <CardHeader>
+                <Badge>{session.mode}</Badge>
                 <CardTitle>{session.taskId?.title || "Deleted task"}</CardTitle>
                 <CardDescription>Session #{index + 1}</CardDescription>
                 <CardAction><Badge variant={"destructive"}>{session.completed ? "Completed" : "Incomplete"}</Badge></CardAction>

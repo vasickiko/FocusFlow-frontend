@@ -8,6 +8,7 @@ export type Session = {
   } | null;
   plannedDuration: number;
   actualDuration: number;
+  mode: "focus" | "break";
   createdAt: string;
   updatedAt: string;
   endedAt: string | null;

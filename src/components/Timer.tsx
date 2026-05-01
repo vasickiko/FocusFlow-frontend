@@ -131,6 +131,7 @@ const Timer = ({ selectedTask }: TimerProps) => {
       const data = {
         taskId: selectedTask._id,
         plannedDuration: timeLeft,
+        mode: mode
       }
      console.log("CREATE SESSION DATA:", data);
       const res = await api.post("/api/create-session", data)
@@ -162,7 +163,7 @@ const Timer = ({ selectedTask }: TimerProps) => {
 
   return (
     <div
-  className={`flex flex-col rounded-2xl min-w-sm py-8 items-center justify-center ${
+  className={`flex flex-col rounded-2xl !min-w-sm sm:!min-w-3xl py-8 items-center justify-center ${
     image ? "bg-black/5 backdrop-blur-3xl" : ""
   }`}
 >

@@ -23,7 +23,7 @@ const Navbar = () => {
     }
 
     return(
-       <div className="w-full fixed top-0 h-14 sm:h-20 bg-white/20 dark:bg-black/20 backdrop-blur-md z-50 py-2.5 sm:py-5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
+       <div className="w-full fixed top-0 h-14 sm:h-20 bg-white/20 dark:bg-black/50 backdrop-blur-2xl z-50 py-2.5 sm:py-5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
             <div className="flex gap-0.5 items-center">
                 <Link to="/"><img src={logo_black} alt="" className="sm:w-10 sm:h-10 h-7 w-7 dark:hidden" />
                 <Link to="/"><img src={logo_white} alt="" className="sm:w-10 sm:h-10 h-7 w-7 hidden dark:inline-block" /></Link></Link>
