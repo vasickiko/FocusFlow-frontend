@@ -364,9 +364,12 @@ const TasksPage = () => {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Category</SelectLabel>
+                                  <SelectItem value="code">Code</SelectItem>
                                   <SelectItem value="study">Study</SelectItem>
                                   <SelectItem value="read">Read</SelectItem>
                                   <SelectItem value="paint">Paint</SelectItem>
+                                  <SelectItem value="craft">Craft</SelectItem>
+                                  <SelectItem value="crochet">Crochet</SelectItem>    
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -500,14 +503,15 @@ const TasksPage = () => {
 
                   <Card className="cursor-pointer mt-2 h-full" key={task._id} onClick={() => { dispatch(selectTask(task._id)); navigate(`/dashboard/tasks/${task._id}`);}}>
                     <CardHeader>
+                      <Badge className="mb-1" variant={"secondary"}>{task.category}</Badge>
                       <CardTitle>{task.title}</CardTitle>    
                       <CardDescription>
                         {task.description}
                       </CardDescription>
 
-                      <CardAction>
+                      {/* <CardAction className="hidden">
                         <Badge variant={"secondary"}>{task.category}</Badge>
-                      </CardAction>
+                      </CardAction> */}
 
                     </CardHeader>
 
