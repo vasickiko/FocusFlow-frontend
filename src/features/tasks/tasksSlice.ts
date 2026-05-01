@@ -11,7 +11,7 @@ export type Task = {
   _id: string;
   category: string;
   title: string;
-  description: string;
+  description?: string;
   preset: Preset;
   status: "completed" | "in_progress" | "not_completed";
   createdAt: string;

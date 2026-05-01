@@ -274,7 +274,7 @@ const TasksPage = () => {
     const search = query.toLowerCase();
     return (
       task.title.toLowerCase().includes(search) ||
-      task.description.toLowerCase().includes(search)
+      task.description?.toLowerCase().includes(search)
     );
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
