@@ -15,7 +15,7 @@ import { getTasks, addTask, selectTask, toggleTaskState } from "../features/task
 import { Check, CircleSlash,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Play, Plus, Rows3, Timer} from "lucide-react";
 
 // shadcn
-import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   HoverCard,
   HoverCardContent,
@@ -369,7 +369,8 @@ const TasksPage = () => {
                                   <SelectItem value="read">Read</SelectItem>
                                   <SelectItem value="paint">Paint</SelectItem>
                                   <SelectItem value="craft">Craft</SelectItem>
-                                  <SelectItem value="crochet">Crochet</SelectItem>    
+                                  <SelectItem value="crochet">Crochet</SelectItem>
+                                  <SelectItem value="write">Write</SelectItem>    
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -577,7 +578,8 @@ const TasksPage = () => {
                                   <SelectItem value="read">Read</SelectItem>
                                   <SelectItem value="paint">Paint</SelectItem>
                                   <SelectItem value="craft">Craft</SelectItem>
-                                  <SelectItem value="crochet">Crochet</SelectItem>                          
+                                  <SelectItem value="crochet">Crochet</SelectItem>     
+                                  <SelectItem value="write">Write</SelectItem>                     
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
