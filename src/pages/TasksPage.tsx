@@ -324,7 +324,7 @@ const TasksPage = () => {
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-0 sm:pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
+    <div className="container pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
 
       {tasks.length >= 1 && (
       <div className="w-full flex-col sm:flex-row flex gap-2 items-center">
