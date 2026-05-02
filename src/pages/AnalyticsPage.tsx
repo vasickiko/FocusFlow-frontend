@@ -43,7 +43,6 @@ const AnalyticsPage = () => {
     const fetchWeeklyFocus = async () => {
       try {
         setLoading(true)
-        await new Promise((resolve) => setTimeout(resolve, 60000)); // 1.5s delay
         const res = await api.get("/analytics/weekly-focus");
         setChartData(res.data);
       }catch (err) {
@@ -56,7 +55,6 @@ const AnalyticsPage = () => {
     const fetchBaseInfo = async () => {
       try{
         setLoading(true)
-        await new Promise((resolve) => setTimeout(resolve, 60000)); // 1.5s delay
         const res = await api.get("/analytics/base-info")
         setBaseInfo(res.data)
       }catch(err){
