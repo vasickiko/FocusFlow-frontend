@@ -125,7 +125,7 @@ const AnalyticsPage = () => {
     if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
     return (
-        <div className="container  flex flex-col items-start gap-9 mx-auto">
+        <div className="container pb-0 sm:pb-8 sm:pr-3 flex flex-col items-start gap-9 mx-auto ">
 
         <div className="w-full flex flex-col items-start gap-3">
             <div>

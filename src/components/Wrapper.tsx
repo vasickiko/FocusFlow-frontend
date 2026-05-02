@@ -61,7 +61,7 @@ const Wrapper = () => {
           </div>
       
   
-        <div className="sm:p-1 py-20 px-6 sm:flex-1 w-full flex-1 min-h-0 overflow-y-auto custom-scroll">
+        <div className="sm:p-1 py-20 pb-28 px-6 sm:flex-1 w-full flex-1 min-h-0 overflow-y-auto custom-scroll">
           <Outlet />
         </div>
 
