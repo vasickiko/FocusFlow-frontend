@@ -43,6 +43,7 @@ const AnalyticsPage = () => {
     const fetchWeeklyFocus = async () => {
       try {
         setLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 60000)); // 1.5s delay
         const res = await api.get("/analytics/weekly-focus");
         setChartData(res.data);
       }catch (err) {
@@ -55,6 +56,7 @@ const AnalyticsPage = () => {
     const fetchBaseInfo = async () => {
       try{
         setLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 60000)); // 1.5s delay
         const res = await api.get("/analytics/base-info")
         setBaseInfo(res.data)
       }catch(err){
@@ -122,7 +124,7 @@ const AnalyticsPage = () => {
         }
     };
 
-    if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
+    if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
     return (
         <div className="container  flex flex-col items-start gap-9 mx-auto">
