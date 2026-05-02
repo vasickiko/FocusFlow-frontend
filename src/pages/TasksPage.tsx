@@ -106,7 +106,7 @@ const TasksPage = () => {
   const [customFocus, setCustomFocus] = useState("");
   const [customBreak, setCustomBreak] = useState("");
 
-  const [showGrid, setShowGrid] = useState("2");
+  const [showGrid, setShowGrid] = useState("1");
 
   const { tasks } = useSelector((state: RootState) => state.tasks);
 
@@ -412,9 +412,7 @@ const TasksPage = () => {
                                   <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
                                   <SelectItem value="study"><Notebook />Study</SelectItem>
                                   <SelectItem value="read"><BookOpen />Read</SelectItem>
-                                  <SelectItem value="paint"><Palette />Paint</SelectItem>
-                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
-                                  <SelectItem value="write"><Pencil />Write</SelectItem>    
+                                  <SelectItem value="paint"><Palette />Paint</SelectItem> 
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -617,15 +615,12 @@ const TasksPage = () => {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Category</SelectLabel>
-                                  <SelectLabel>Category</SelectLabel>
                                   <SelectItem value="code"><CodeXml />Code</SelectItem>
                                   <SelectItem value="write"><Pencil />Write</SelectItem>    
                                   <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
                                   <SelectItem value="study"><Notebook />Study</SelectItem>
                                   <SelectItem value="read"><BookOpen />Read</SelectItem>
-                                  <SelectItem value="paint"><Palette />Paint</SelectItem>
-                                  <SelectItem value="craft"><ScissorsLineDashed />Craft</SelectItem>
-                                  <SelectItem value="write"><Pencil />Write</SelectItem>                       
+                                  <SelectItem value="paint"><Palette />Paint</SelectItem>                        
                                   </SelectGroup>
                                 </SelectContent>
                             </Select>
@@ -748,7 +743,7 @@ const TasksPage = () => {
             {tasks.map((task, index)=>(
               <TableRow onClick={() => { dispatch(selectTask(task._id)); navigate(`/dashboard/tasks/${task._id}`);}}>
                 <TableCell className="font-medium">#{index+1}</TableCell>
-                <TableCell>{task.category}</TableCell>
+                <TableCell className="flex items-center gap-1">{getCategoryIcon(task.category)}</TableCell>
                 <TableCell>{task.title}</TableCell>
                 <TableCell>{task.preset.type}</TableCell>
                 <TableCell>{task.preset.focus}</TableCell>

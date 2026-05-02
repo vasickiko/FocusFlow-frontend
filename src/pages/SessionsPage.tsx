@@ -144,7 +144,6 @@ const SessionsPage = () => {
           {filteredSessions.map((session, index) => (
             <Card key={session._id} className="h-full">
               <CardHeader>
-                <Badge>{session.mode}</Badge>
                 <CardTitle>{session.taskId?.title || "Deleted task"}</CardTitle>
                 <CardDescription>Session #{index + 1}</CardDescription>
                 <CardAction><Badge variant={"destructive"}>{session.completed ? "Completed" : "Incomplete"}</Badge></CardAction>
@@ -161,14 +160,18 @@ const SessionsPage = () => {
                 </div>
               </CardContent>
 
-              <CardFooter className="flex-col items-start">
+              <CardFooter className="flex-col items-start gap-1">
                 <div className="flex-1 w-full flex items-center justify-between">
-                    <p>Started:</p>
+                    <p>Type</p>
+                    <p className="font-medium capitalize">{session.mode}</p>
+                </div>
+               
+                <div className="flex-1 w-full flex items-center justify-between">
+                    <p>Started</p>
                     <p className="font-medium">{formatDate(session.createdAt)}</p>
                 </div>
-                <hr  className="w-full my-2"/>
                 <div className="flex-1 w-full flex items-center justify-between">
-                    <p>Ended:</p>
+                    <p>Ended</p>
                     <p className="font-medium">{formatDate(session.endedAt)}</p>
                 </div>
               </CardFooter>
@@ -184,6 +187,7 @@ const SessionsPage = () => {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[100px]">Session Id</TableHead>
+            <TableHead>Mode</TableHead>
             <TableHead>Task title</TableHead>
             <TableHead>Planned time</TableHead>
             <TableHead>Actual time</TableHead>
@@ -196,6 +200,7 @@ const SessionsPage = () => {
           {filteredSessions.map((session, index)=>(
             <TableRow key={session._id}>
               <TableCell className="font-medium">#{index+1}</TableCell>
+               <TableCell>{session.mode || "err"}</TableCell>
               <TableCell>{session.taskId?.title || "Deleted task"}</TableCell>
               <TableCell>{formatTime(session.plannedDuration)}m</TableCell>
               <TableCell>{formatTime(session.actualDuration)}m</TableCell>

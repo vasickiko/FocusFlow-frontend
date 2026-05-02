@@ -18,7 +18,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { AlignCenterHorizontal, BookOpen, CalendarSync, CodeXml, Notebook, Palette, Pencil, ScissorsLineDashed, Timer } from "lucide-react";
+import { AlignCenterHorizontal, BookOpen, CalendarSync, CodeXml, LoaderCircle, Notebook, Palette, Pencil, ScissorsLineDashed, Timer } from "lucide-react";
 
 type WeeklyFocus = {
   date: string;
@@ -37,23 +37,31 @@ const AnalyticsPage = () => {
   const [chartData, setChartData] = useState<WeeklyFocus[]>([]);
   const [baseInfo, setBaseInfo] = useState<any>(null)
 
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
     const fetchWeeklyFocus = async () => {
       try {
+        setLoading(true)
         const res = await api.get("/analytics/weekly-focus");
         setChartData(res.data);
       }catch (err) {
         console.log(err);
+      }finally{
+        setLoading(false)
       }
     };
 
     const fetchBaseInfo = async () => {
-        try{
-            const res = await api.get("/analytics/base-info")
-            setBaseInfo(res.data)
-        }catch(err){
-            console.log(err);
-        }
+      try{
+        setLoading(true)
+        const res = await api.get("/analytics/base-info")
+        setBaseInfo(res.data)
+      }catch(err){
+        console.log(err);
+      }finally{
+        setLoading(false)
+      }
     }
 
     fetchBaseInfo()
@@ -114,97 +122,99 @@ const AnalyticsPage = () => {
         }
     };
 
-  return (
-    <div className="container  flex flex-col items-start gap-9 mx-auto">
+    if (loading) return <div className="h-screen w-screen flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
-    <div className="w-full flex flex-col items-start gap-3">
-        <div>
-            <CardTitle>Quick info overview</CardTitle>
-            <CardDescription>Quick overview of your focus performance.</CardDescription>
+    return (
+        <div className="container  flex flex-col items-start gap-9 mx-auto">
+
+        <div className="w-full flex flex-col items-start gap-3">
+            <div>
+                <CardTitle>Quick insights</CardTitle>
+                <CardDescription> Key metrics from your recent sessions. A snapshot of your overall focus performance.</CardDescription>
+            </div>
+            <div className="w-full flex flex-col sm:flex-row items-start gap-4 h-fit">
+                <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-blue-500/10 from-30%">
+                    <CardHeader>
+                        <CardTitle>Total focus</CardTitle>
+                        <CardAction><Timer size={20}/></CardAction>
+                    </CardHeader>
+                    <CardContent>
+                        <h1 className="text-xl font-medium"> {formatDuration(baseInfo?.totalFocusTime)}</h1>
+                    </CardContent>
+                    
+                </Card>
+                <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-pink-500/10 from-30%">
+                    <CardHeader>
+                        <CardTitle>Top category</CardTitle>
+                        <CardAction>{getCategoryIcon(baseInfo?.topCategory)}</CardAction>
+                    </CardHeader> 
+                    <CardContent>
+                        <h1 className="text-xl capitalize font-medium">{baseInfo?.topCategory} <span className="text-base font-normal">({formatDuration(baseInfo?.topCategoryFocusTime)})</span></h1>
+                    </CardContent>         
+                </Card> 
+                <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-emerald-500/10 from-30%">
+                    <CardHeader>
+                        <CardTitle>Average focus time</CardTitle>
+                        <CardAction><AlignCenterHorizontal size={20}/></CardAction>
+                    </CardHeader>
+                    <CardContent>
+                        <h1 className="text-xl font-medium"> {formatDuration(baseInfo?.averageSessionTime)}</h1>
+                    </CardContent>
+                    
+                </Card>        
+            </div>  
         </div>
-        <div className="w-full flex flex-col sm:flex-row items-start gap-4 h-fit">
-            <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-blue-500/10 from-30%">
-                <CardHeader>
-                    <CardTitle>Total focus</CardTitle>
-                    <CardAction><Timer size={20}/></CardAction>
-                </CardHeader>
-                <CardContent>
-                    <h1 className="text-xl font-medium"> {formatDuration(baseInfo?.totalFocusTime)}</h1>
-                </CardContent>
-                
-            </Card>
-            <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-pink-500/10 from-30%">
-                <CardHeader>
-                    <CardTitle>Top category</CardTitle>
-                    <CardAction>{getCategoryIcon(baseInfo?.topCategory)}</CardAction>
-                </CardHeader> 
-                <CardContent>
-                    <h1 className="text-xl capitalize font-medium">{baseInfo?.topCategory} <span className="text-base font-normal">({formatDuration(baseInfo?.topCategoryFocusTime)})</span></h1>
-                </CardContent>         
-            </Card> 
-             <Card className="w-full sm:w-1/3 bg-linear-to-b from-card to-emerald-500/10 from-30%">
-                <CardHeader>
-                    <CardTitle>Average focus time</CardTitle>
-                    <CardAction><AlignCenterHorizontal size={20}/></CardAction>
-                </CardHeader>
-                <CardContent>
-                    <h1 className="text-xl font-medium"> {formatDuration(baseInfo?.averageSessionTime)}</h1>
-                </CardContent>
-                
-            </Card>        
-        </div>  
-    </div>
 
-     
-    <div className="w-full flex flex-col items-start gap-3">
-        <div>
-            <CardTitle>Focus analytics</CardTitle>
-            <CardDescription>Your focus time over the past 7 days. Insights into your recent focus performance..</CardDescription>
+        
+        <div className="w-full flex flex-col items-start gap-3">
+            <div>
+                <CardTitle>Focus analytics</CardTitle>
+                <CardDescription>Your focus time over the past 7 days. Insights into your recent focus performance..</CardDescription>
+            </div>
+            <Card className="w-full">
+            <CardHeader>
+                <CardTitle>Weekly Focus</CardTitle>
+                <CardDescription>Focus time for the past 7 days</CardDescription>
+                <CardAction><CalendarSync size={20}/></CardAction>
+            </CardHeader>
+
+            <CardContent>
+                <ChartContainer className="sm:h-40 w-full" config={chartConfig}>
+                <AreaChart data={chartData}>
+                    <CartesianGrid vertical={false} />
+
+                    <XAxis
+                    dataKey="date"
+                    tickLine={false}
+                    axisLine={false}
+                    tickMargin={8}
+                    tickFormatter={(value) =>
+                        new Date(value).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        })}
+                    />
+
+                    <ChartTooltip
+                    cursor={false}
+                    content={<ChartTooltipContent />}
+                    />
+
+                    <Area
+                    dataKey="totalFocus"
+                    type="natural"
+                    fill="#3b82f6"
+                    fillOpacity={0.2}
+                    stroke="#3b82f6"
+                    />
+                </AreaChart>
+                </ChartContainer>
+            </CardContent>
+            </Card>  
         </div>
-        <Card className="w-full">
-        <CardHeader>
-            <CardTitle>Weekly Focus</CardTitle>
-            <CardDescription>Focus time for the past 7 days</CardDescription>
-            <CardAction><CalendarSync size={20}/></CardAction>
-        </CardHeader>
-
-        <CardContent>
-            <ChartContainer className="sm:h-40 w-full" config={chartConfig}>
-            <AreaChart data={chartData}>
-                <CartesianGrid vertical={false} />
-
-                <XAxis
-                dataKey="date"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={(value) =>
-                    new Date(value).toLocaleDateString("en-US", {
-                    weekday: "short",
-                    })}
-                />
-
-                <ChartTooltip
-                cursor={false}
-                content={<ChartTooltipContent />}
-                />
-
-                <Area
-                dataKey="totalFocus"
-                type="natural"
-                fill="#3b82f6"
-                fillOpacity={0.2}
-                stroke="#3b82f6"
-                />
-            </AreaChart>
-            </ChartContainer>
-        </CardContent>
-        </Card>  
-    </div>
-    
-    
-    </div>
-  );
+        
+        
+        </div>
+    );
 };
 
 export default AnalyticsPage;
