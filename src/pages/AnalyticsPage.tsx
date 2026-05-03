@@ -18,7 +18,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
-import { AlignCenterHorizontal, BookOpen, CalendarSync, CodeXml, LoaderCircle, Notebook, Palette, Pencil, ScissorsLineDashed, Timer } from "lucide-react";
+import { AlignCenterHorizontal, BookOpen, CalendarSync, Check,  CircleSlash, CodeXml, LoaderCircle, Notebook, Palette, Pencil, ScissorsLineDashed, Timer } from "lucide-react";
 
 type WeeklyFocus = {
   date: string;
@@ -36,6 +36,8 @@ const chartConfig = {
 const AnalyticsPage = () => {
   const [chartData, setChartData] = useState<WeeklyFocus[]>([]);
   const [baseInfo, setBaseInfo] = useState<any>(null)
+
+  const [streak, setStreak] = useState<any>(null);
 
   const [loading, setLoading] = useState(false)
 
@@ -64,9 +66,22 @@ const AnalyticsPage = () => {
       }
     }
 
-    fetchBaseInfo()
+    const fetchStreakInfo = async () => {
+        try{
+            setLoading(true)
+            const res = await api.get("/analytics/streak-focus")
+            console.log(res.data)
+            setStreak(res.data)
+        }catch(err){
+            console.log(err);
+        }finally{
+            setLoading(false)
+        }
+    }
 
+    fetchBaseInfo()
     fetchWeeklyFocus();
+    fetchStreakInfo(); 
   }, []);
 
     const formatDuration = (seconds?: number) => {
@@ -127,6 +142,30 @@ const AnalyticsPage = () => {
     return (
         <div className="container pb-0 sm:pb-8 sm:pr-3 flex flex-col items-start gap-9 mx-auto ">
 
+         <div className="w-full flex sm:hidden flex-col items-start gap-3">
+            <div>
+                <CardTitle>Consistency streak</CardTitle>
+                <CardDescription>Your focus consistency over the past 7 days.</CardDescription>
+            </div>
+            
+            <Card className="w-full">
+                <CardHeader>
+                    <CardTitle>Productivity streak</CardTitle>
+                    <CardAction><h1 className="text-xl font-medium">{streak?.streak} <span className="text-base font-normal">{streak?.streak > 1 ? "days" : "day"}</span></h1></CardAction>
+                </CardHeader>
+                <CardContent className="flex items-center justify-between">
+                    {streak?.days?.map((day: any) => (
+                        <div key={day.date || day.day} className="flex flex-col items-center gap-1">
+                            <p>{day?.day}</p>
+                            {day?.focused ?  <Check strokeWidth={3} size={14}/> : <CircleSlash strokeWidth={3} size={14}/>}
+                        </div>
+                       
+                    ))}
+                </CardContent>
+                    
+            </Card>
+         </div>
+
         <div className="w-full flex flex-col items-start gap-3">
             <div>
                 <CardTitle>Quick insights</CardTitle>
@@ -166,7 +205,7 @@ const AnalyticsPage = () => {
         </div>
 
         
-        <div className="w-full flex flex-col items-start gap-3">
+        <div className="w-full flex sm:hidden flex-col items-start gap-3">
             <div>
                 <CardTitle>Focus analytics</CardTitle>
                 <CardDescription>Your focus time over the past 7 days. Insights into your recent focus performance..</CardDescription>
@@ -211,6 +250,81 @@ const AnalyticsPage = () => {
             </CardContent>
             </Card>  
         </div>
+
+         <div className="w-full hidden sm:flex flex-col items-start gap-3">
+            <div>
+                <CardTitle>Focus analytics and consistency streak</CardTitle>
+                <CardDescription>Your focus time over the past 7 days. Insights into your recent focus performance..</CardDescription>
+            </div>
+            <div className="flex gap-3 items-center w-full">
+                <Card className="w-2/3">
+                <CardHeader>
+                    <CardTitle>Weekly Focus</CardTitle>
+                    <CardDescription>Focus time for the past 7 days</CardDescription>
+                    <CardAction><CalendarSync size={20}/></CardAction>
+                </CardHeader>
+
+                <CardContent>
+                    <ChartContainer className="h-40 w-full" config={chartConfig}>
+                    <AreaChart data={chartData}>
+                        <CartesianGrid vertical={false} />
+
+                        <XAxis
+                        dataKey="date"
+                        tickLine={false}
+                        axisLine={false}
+                        tickMargin={8}
+                        tickFormatter={(value) =>
+                            new Date(value).toLocaleDateString("en-US", {
+                            weekday: "short",
+                            })}
+                        />
+
+                        <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent />}
+                        />
+
+                        <Area
+                        dataKey="totalFocus"
+                        type="natural"
+                        fill="#3b82f6"
+                        fillOpacity={0.2}
+                        stroke="#3b82f6"
+                        />
+                    </AreaChart>
+                    </ChartContainer>
+                </CardContent>
+                </Card>  
+                <Card className="w-1/3 !h-full">
+                        <CardHeader>
+                            <CardTitle>Productivity streak</CardTitle>
+                            <CardDescription>Track your streak</CardDescription>
+                        </CardHeader>
+                        
+                        <CardContent className="flex h-40 flex-col items-center justify-between">
+                            <div className="h-20 w-20  mx-auto rounded-full flex items-center justify-center p-5 border-2">
+                                <h1 className="text-xl flex items-end gap-1 font-medium">{streak?.streak}<span className="text-base font-normal">{streak?.streak > 1 ? "days" : "day"}</span></h1>
+                            </div>
+
+                            <div className="flex items-center justify-between w-full">
+                                 {streak?.days?.map((day: any) => (
+                                <div key={day.date || day.day} className="flex flex-col items-center gap-1">
+                                    <p>{day?.day}</p>
+                                    {day?.focused ?  <Check strokeWidth={3} size={14}/> : <CircleSlash strokeWidth={3} size={14}/>}
+                                </div>
+                            
+                            ))}
+                            </div>
+                           
+                        </CardContent>
+                            
+                </Card>  
+
+            </div>
+            
+        </div>
+
         
         
         </div>
