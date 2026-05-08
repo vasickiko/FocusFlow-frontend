@@ -9,7 +9,7 @@ import { toast } from "sonner";
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
-import { getTasks, addTask, selectTask, toggleTaskState } from "../features/tasks/tasksSlice";
+import { getTasks, addTask, selectTask, toggleTaskState, deleteTask } from "../features/tasks/tasksSlice";
 
 // icons
 import { BookOpen, Check, CircleSlash,  CodeXml,  Crosshair, Ellipsis, FolderGit2, Grid2x2, Info, LoaderCircle, Moon, Notebook, Palette, Pencil, Play, Plus, Rows3, ScissorsLineDashed, Timer} from "lucide-react";
@@ -270,7 +270,6 @@ const TasksPage = () => {
   });
   };
 
-
   const fetchAllTasks = async () => {
     try{
       setLoading(true);
@@ -305,6 +304,15 @@ const TasksPage = () => {
     }
   }
 
+  const handleDeleteTask = async (taskId: string) => {
+    try{
+      await api.delete(`/api/tasks/${taskId}`)
+      dispatch(deleteTask(taskId))
+    }catch(err){
+      console.log(err)
+    }
+  } 
+
   //use effect
   useEffect(() => {
     fetchAllTasks()
@@ -321,10 +329,11 @@ const TasksPage = () => {
     );
   }).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
+
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
+    <div className="container sm:pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto">
 
       {tasks.length >= 1 && (
       <div className="w-full flex-col sm:flex-row flex gap-2 items-center">
@@ -538,7 +547,7 @@ const TasksPage = () => {
                           </DropdownMenuGroup>
                             <DropdownMenuSeparator />
                           <DropdownMenuItem className="hover:!bg-transparent">            
-                            <Button variant={"destructive"}  className=" w-full">Remove</Button>
+                            <Button variant={"destructive"}  className=" w-full" onClick={(e) => {e.stopPropagation(); handleDeleteTask(task._id)}}>Remove</Button>
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>        

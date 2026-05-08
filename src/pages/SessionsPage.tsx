@@ -36,8 +36,6 @@ const SessionsPage = () => {
   const { sessions } = useSelector((state: RootState) => state.sessions);
 
   useEffect(() => {
-  if (sessions.length > 0) return;
-
   const fetchSessions = async () => {
     try {
       setLoading(true);
@@ -81,7 +79,7 @@ const SessionsPage = () => {
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto ">
+     <div className="container sm:pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto">
 
       {/* {sessions.length >= 1 && (
         <div>

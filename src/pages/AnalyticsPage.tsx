@@ -140,7 +140,7 @@ const AnalyticsPage = () => {
     if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
     return (
-        <div className="container pb-0 sm:pb-8 sm:pr-3 flex flex-col items-start gap-9 mx-auto ">
+        <div className="container sm:pb-8 sm:pr-3 flex flex-col items-start gap-9 mx-auto">
 
          <div className="w-full flex sm:hidden flex-col items-start gap-3">
             <div>
@@ -234,8 +234,23 @@ const AnalyticsPage = () => {
                     />
 
                     <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent />}
+                        cursor={false}
+                        content={
+                            <ChartTooltipContent
+                            formatter={(value) => {
+                                const seconds = Number(value)
+
+                                const hours = Math.floor(seconds / 3600)
+                                const minutes = Math.floor((seconds % 3600) / 60)
+
+                                if (hours > 0) {
+                                return [`${hours}h ${minutes}m`, "Focus"]
+                                }
+
+                                return [`${minutes}m`, "Focus"]
+                            }}
+                            />
+                        }
                     />
 
                     <Area
@@ -256,7 +271,7 @@ const AnalyticsPage = () => {
                 <CardTitle>Focus analytics and consistency streak</CardTitle>
                 <CardDescription>Your focus time over the past 7 days. Insights into your recent focus performance..</CardDescription>
             </div>
-            <div className="flex gap-3 items-center w-full">
+            <div className="flex gap-4 items-center w-full">
                 <Card className="w-2/3">
                 <CardHeader>
                     <CardTitle>Weekly Focus</CardTitle>
@@ -280,10 +295,25 @@ const AnalyticsPage = () => {
                             })}
                         />
 
-                        <ChartTooltip
+                       <ChartTooltip
                         cursor={false}
-                        content={<ChartTooltipContent />}
-                        />
+                        content={
+                            <ChartTooltipContent
+                            formatter={(value) => {
+                                const seconds = Number(value)
+
+                                const hours = Math.floor(seconds / 3600)
+                                const minutes = Math.floor((seconds % 3600) / 60)
+
+                                if (hours > 0) {
+                                return [`${hours}h ${minutes}m`, " Focus"]
+                                }
+
+                                return [`${minutes}m`, " Focus"]
+                            }}
+                            />
+                        }
+                    />
 
                         <Area
                         dataKey="totalFocus"

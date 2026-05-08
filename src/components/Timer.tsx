@@ -133,9 +133,13 @@ const Timer = ({ selectedTask }: TimerProps) => {
         plannedDuration: timeLeft,
         mode: mode
       }
-     console.log("CREATE SESSION DATA:", data);
       const res = await api.post("/api/create-session", data)
-      dispatch(startSession(res.data))
+      dispatch(
+  startSession({
+    ...res.data,
+    taskId: selectedTask,
+  })
+)
       return true
     }catch(err){
       console.log(err);
