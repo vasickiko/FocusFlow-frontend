@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "./ui/button";
-import { Card } from "./ui/card";
 import ThemeToggle from "./ThemeToggle";
 
 import logo_black from "../assets/logo.png";
