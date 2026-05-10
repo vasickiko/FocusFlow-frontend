@@ -3,7 +3,6 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 
 import Root from "./pages/Root";
-import Wrapper from "./components/Wrapper";
 import TasksPage from "./pages/TasksPage";
 import TaskDetails from "./pages/TaskDetails";
 import SessionsPage from "./pages/SessionsPage";
