@@ -10,10 +10,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom";
 
+import heroimage from "../assets/Black-Titanium.png";
+
 
 const LandingPage = () => {
   return (
-    <div className="bg-transparent h-screen overflow-hidden flex flex-col">
+    <div className="bg-transparent h-screen overflow-hidden relative flex flex-col">
+      
       <Navbar/>
       <div className="px-6 py-20 flex flex-col items-center gap-12">
         <div className="flex flex-col items-center gap-6 text-center">
@@ -50,6 +53,9 @@ const LandingPage = () => {
            
         </div>
         
+      </div>
+      <div className="mx-auto">
+        <img src={heroimage} alt="Hero" className="sm:h-[600px] h-[450px]" />
       </div>
     </div>
   )

@@ -97,6 +97,9 @@ const TasksPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [loadingChangingStatus, setLoadingChangingStatus] = useState(false);
+  
+  const[deleteLoading, setDeleteLoading] = useState(false)
+  const[deleteLoadingId, setDeleteLoadingId] = useState("")
 
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
@@ -152,11 +155,11 @@ const TasksPage = () => {
 
   const getStatusLabel = (status: string) => {
     if(status === "completed"){
-      return <p className="flex text-base items-center gap-1"><Check strokeWidth={3} size={14}/>Completed</p>
+      return <p className="text-lg font-medium flex text-base items-center gap-1"><Check strokeWidth={3} size={14}/>Completed</p>
     }else if(status === "in_progress"){
-      return <p className="flex text-base items-center gap-1"><LoaderCircle strokeWidth={3} className="animate-spin [animation-duration:3s]" size={14}/>In progress</p>
+      return <p className="text-lg font-medium flex text-base items-center gap-1"><LoaderCircle strokeWidth={3} className="animate-spin [animation-duration:3s]" size={14}/>In progress</p>
     }else if(status === "not_completed"){
-      return <p className="flex text-base items-center gap-1"><CircleSlash strokeWidth={3} size={14} />Incomplete</p>
+      return <p className="text-lg font-medium flex text-base items-center gap-1"><CircleSlash strokeWidth={3} size={14} />Incomplete</p>
     }
   };
 
@@ -177,7 +180,7 @@ const TasksPage = () => {
     case "craft":
       return (
         <>
-          <ScissorsLineDashed className="size-3" /> Craft
+          <ScissorsLineDashed className="size-3"/> Craft
         </>
       );
     case "study":
@@ -305,13 +308,18 @@ const TasksPage = () => {
   }
 
   const handleDeleteTask = async (taskId: string) => {
-    try{
+    try {
+      setDeleteLoadingId(taskId)   // set it here, synchronously before the await
+      setDeleteLoading(true)
       await api.delete(`/api/tasks/${taskId}`)
       dispatch(deleteTask(taskId))
-    }catch(err){
+    } catch(err) {
       console.log(err)
+    } finally {
+      setDeleteLoading(false)
+      setDeleteLoadingId("")
     }
-  } 
+  }
 
   //use effect
   useEffect(() => {
@@ -333,7 +341,7 @@ const TasksPage = () => {
   if (loading) return <div className="w-full h-full flex items-center justify-center"><LoaderCircle className="animate-spin" /></div>;
 
   return (
-    <div className="container sm:pb-8 sm:pr-3 flex flex-col items-start gap-4 mx-auto">
+    <div className="container flex flex-col items-start gap-4 sm:gap-8 mx-auto">
 
       {tasks.length >= 1 && (
       <div className="w-full flex-col sm:flex-row flex gap-2 items-center">
@@ -388,7 +396,7 @@ const TasksPage = () => {
         <div className={`w-full grid  grid-cols-${showGrid} sm:grid-cols-4 gap-x-4 gap-y-14`}>
           <div>
               <div className="flex items-center gap-1 h-6">
-                <p>Add task</p>
+                <p className="text-lg font-medium">Add task</p>
                 <HoverCard>
                   <HoverCardTrigger><Info size={14}/></HoverCardTrigger>
                   <HoverCardContent>Click on the "+" icon in order to create your task.</HoverCardContent>
@@ -525,7 +533,7 @@ const TasksPage = () => {
           </div>
 
           {filteredTasks.map((task) => (
-                <div>
+                <div >
                   <div className="flex h-6 items-center justify-between">     
                    { loadingChangingStatus ? <LoaderCircle strokeWidth={3} className="animate-spin" size={14}/> : getStatusLabel(task.status) }           
                       <DropdownMenu>
@@ -553,7 +561,9 @@ const TasksPage = () => {
                       </DropdownMenu>        
                   </div>
 
-                  <Card className="cursor-pointer mt-2 h-full" key={task._id} onClick={() => { dispatch(selectTask(task._id)); navigate(`/dashboard/tasks/${task._id}`);}}>
+        
+                  
+                  <Card className={`${deleteLoading && task._id === deleteLoadingId ? 'opacity-50' : ''} cursor-pointer mt-2 h-full`} key={task._id} onClick={() => { dispatch(selectTask(task._id)); navigate(`/dashboard/tasks/${task._id}`);}}>
                     <CardHeader>
                       <Badge className="mb-1" variant={"secondary"}>{getCategoryIcon(task.category)}</Badge>
                       <CardTitle>{task.title}</CardTitle>    

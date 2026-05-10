@@ -18,7 +18,7 @@ const Wrapper = () => {
 
       <div className="w-full sm:p-1 flex flex-col flex-1 min-h-0  gap-0 sm:gap-4">
 
-          <div className="p-1 hidden sm:flex flex-col gap-8">
+          {/* <div className="p-1 hidden sm:flex flex-col gap-8">
             <div className="hidden sm:flex flex-col items-start gap-1 shrink-0">
               <h1 className="leading-tighter text-3xl font-semibold tracking-tight text-balance text-primary lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter max-w-4xl">
                 Manage your tasks
@@ -58,7 +58,7 @@ const Wrapper = () => {
                 </Button>
               </Link>
             </div>
-          </div>
+          </div> */}
       
   
         <div className="sm:p-1 py-20 pb-20 px-6 sm:flex-1 w-full flex-1 min-h-0 overflow-y-auto custom-scroll">

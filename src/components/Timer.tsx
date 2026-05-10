@@ -162,6 +162,7 @@ const Timer = ({ selectedTask }: TimerProps) => {
       console.log(err)
     }
   };
+  
 
   const image = localStorage.getItem(`task-bg-${selectedTask._id}`);
 

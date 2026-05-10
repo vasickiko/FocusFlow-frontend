@@ -51,11 +51,11 @@ const App = () => {
             </ProtectedRoute>
           }
         >
-          <Route element={<Wrapper />}>
+          
             <Route index element={<TasksPage />} />
             <Route path="sessions" element={<SessionsPage />} />
             <Route path="analytics" element={<AnalyticsPage />} />
-          </Route>
+          
         </Route>
       </Routes>
   </>

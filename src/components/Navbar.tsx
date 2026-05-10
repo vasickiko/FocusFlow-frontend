@@ -1,53 +1,129 @@
-import { useNavigate, useLocation } from "react-router-dom"
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-//shadcn
-import { Button } from "./ui/button"
-import ThemeToggle from "./ThemeToggle"
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import ThemeToggle from "./ThemeToggle";
 
-//logos
-import logo_black from "../assets/logo.png"
-import logo_white from "../assets/logo-white.png"
+import logo_black from "../assets/logo.png";
+import logo_white from "../assets/logo-white.png";
+
+import { Hourglass, Layers2, TrendingUpDown } from "lucide-react";
 
 const Navbar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    const location = useLocation()
-    const navigate = useNavigate()
+  const token = localStorage.getItem("token");
+  const isDashboard = location.pathname.startsWith("/dashboard");
 
-    const token = localStorage.getItem("token")
+  const selectedButton = location.pathname.includes("/sessions")
+    ? "sessions"
+    : location.pathname.includes("/analytics")
+    ? "analytics"
+    : "tasks";
 
-    function logOut(){
-        if(!token) return
-        localStorage.removeItem("token")
-        navigate("/login")
+  const logOut = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  return (
+    <>
+    {/* mobile */}
+    {
+      location.pathname !== "/" && (
+        <div className="fixed bottom-0 left-0 right-0 h-14 bg-white/20 dark:bg-black/50 backdrop-blur-2xl z-50 flex p-3 border-t sm:hidden gap-2 w-full items-center justify-center">
+          <Link to="/dashboard">
+            <Button
+              className="w-full"
+              variant={selectedButton === "tasks" ? "default" : "outline"}
+            >
+              <Layers2 className="size-3" />
+              Tasks
+            </Button>
+          </Link>
+          <Link to="sessions">
+            <Button
+              className="w-full"
+              variant={selectedButton === "sessions" ? "default" : "outline"}
+            >
+              <Hourglass className="size-3" />
+              Sessions
+            </Button>
+          </Link>
+          <Link to="analytics">
+            <Button
+              className="w-full"
+              variant={selectedButton === "analytics" ? "default" : "outline"}
+            >
+              <TrendingUpDown className="size-3" />
+              Analytics
+            </Button>
+          </Link>
+         
+        </div>
+      )
     }
 
-    return(
-       <div className="w-full fixed top-0 h-14 sm:h-20 bg-white/20 dark:bg-black/50 backdrop-blur-2xl z-50 py-2.5 sm:py-5 px-6 border-b sm:border-b-0 sm:px-15 flex justify-between items-center">
-            <div className="flex gap-0.5 items-center">
-                <Link to="/"><img src={logo_black} alt="" className="sm:w-10 sm:h-10 h-7 w-7 dark:hidden" /></Link>
-                <Link to="/"><img src={logo_white} alt="" className="sm:w-10 sm:h-10 h-7 w-7 hidden dark:inline-block" /></Link>
-            </div>
+    <div className="fixed top-0 left-0 right-0 h-14 bg-white/20 dark:bg-black/50 backdrop-blur-2xl z-50 flex p-3 px-6 border-t gap-2 w-full items-center justify-between">
+      <Link to="/" className="flex items-center shrink-0">
+        <img src={logo_black} alt="Logo" className="h-7 w-7 dark:hidden" />
+        <img src={logo_white} alt="Logo" className="hidden h-7 w-7 dark:block" />
+      </Link>
 
-            <div className="flex items-center gap-2">
-                {token ? 
-                    <div className="flex items-center gap-2">
-                        <Button onClick={logOut}>Log out</Button> 
-                        {!location.pathname.includes("/dashboard") && <Link to="/dashboard"><Button variant="outline">Dashboard</Button></Link>}                
-                    </div>
-                    : 
-                    <div className="flex items-center gap-2">
-                        <Link to="/login"><Button>Log in</Button></Link>
-                        <Link to="/signup"><Button variant="outline">Sign up</Button></Link>
-                    </div>
-                }
-                <ThemeToggle/>
-            </div>
-       </div>
-    )
-}
+      {token && isDashboard && (
+        <div className="hidden md:flex items-center gap-1">
+          <Link to="/dashboard">
+            <Button variant={selectedButton === "tasks" ? "default" : "ghost"}>
+              <Layers2 className="size-3" />
+              Tasks
+            </Button>
+          </Link>
 
-export default Navbar
+          <Link to="/dashboard/sessions">
+            <Button variant={selectedButton === "sessions" ? "default" : "ghost"}>
+              <Hourglass className="size-3" />
+              Sessions
+            </Button>
+          </Link>
 
+          <Link to="/dashboard/analytics">
+            <Button variant={selectedButton === "analytics" ? "default" : "ghost"}>
+              <TrendingUpDown className="size-3" />
+              Analytics
+            </Button>
+          </Link>
+        </div>
+      )}
 
+      <div className="flex items-center gap-2">
+        {token ? (
+          <>
+            {!isDashboard && (
+              <Link to="/dashboard">
+                <Button variant="outline">Dashboard</Button>
+              </Link>
+            )}
 
+            <Button onClick={logOut}>Log out</Button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">
+              <Button>Log in</Button>
+            </Link>
+
+            <Link to="/signup">
+              <Button variant="outline">Sign up</Button>
+            </Link>
+          </>
+        )}
+
+        <ThemeToggle />
+      </div>
+    </div>
+    </>
+  );
+};
+
+export default Navbar;
